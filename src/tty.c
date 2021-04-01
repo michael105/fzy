@@ -135,47 +135,37 @@ static void tty_sgr(tty_t *tty, int code) {
 }
 
 void tty_setfg(tty_t *tty, int fg) {
-	if (tty->fgcolor != fg) {
+	if (tty->color != fg) {
 		tty_sgr(tty, 30 + fg);
-		tty->fgcolor = fg;
+		tty->color = fg;
 	}
 }
 
 void tty_setinvert(tty_t *tty) {
 	//inverse
-	//tty_sgr(tty, 7);
-	fprintf(tty->fout,"\x1b[7m");
+	SETCOLOR(tty,COLORINVERS,"7");
 }
 
 void tty_highlight(tty_t *tty) {
-	//tty_sgr(tty, 1);
-	//tty_sgr(tty,33);
-	fprintf(tty->fout,"\x1b[1;33m");
+	SETCOLOR(tty,COLORHIGHLIGHT,TTY_COLOR_HIGHLIGHT);
 }
 
 
 void tty_lowlight(tty_t *tty) {
-	//tty_sgr(tty, 1);
-	//tty_sgr(tty,33);
-	fprintf(tty->fout,"\x1b[1;33m");
+	SETCOLOR(tty,COLORLOWLIGHT,TTY_COLOR_LOWLIGHT);
 }
 
 
 void tty_setselected(tty_t *tty) {
-	//tty_sgr(tty, 0);
-	//tty_sgr(tty, 30);
-	//tty_sgr(tty, 46);
-	fprintf(tty->fout,"\x1b[0;30;46m");
+	SETCOLOR(tty,COLORSELECTED,TTY_COLOR_SELECTED);
 }
 
 void tty_setunderline(tty_t *tty) {
-	tty_sgr(tty, 4);
+	SETCOLOR(tty,COLORUNDERLINE,"4");
 }
 
 void tty_setnormal(tty_t *tty) {
-	//tty_sgr(tty, 0);
-	tty->fgcolor = 9;
-	fprintf(tty->fout,"\x1b[0;9m");
+	SETCOLOR(tty,COLORNORMAL,TTY_COLOR_NORMAL);
 }
 
 void tty_setnowrap(tty_t *tty) {

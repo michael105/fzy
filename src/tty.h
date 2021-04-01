@@ -3,11 +3,19 @@
 
 #include <termios.h>
 
+enum { COLORNORMAL=128, COLORHIGHLIGHT, COLORLOWLIGHT, COLORSELECTED, COLORINVERS, COLORUNDERLINE } TTY_COLOR_MODES;
+
+#define SETCOLOR( tty, mode, colorstring ) \
+		if ( tty->color!=mode ){ \
+				fprintf(tty->fout, "\x1b[" colorstring "m"); \
+				tty->color=mode; \
+		} 
+
 typedef struct {
 	int fdin;
 	FILE *fout;
 	struct termios original_termios;
-	int fgcolor;
+	int color;
 	size_t maxwidth;
 	size_t maxheight;
 } tty_t;
@@ -37,7 +45,6 @@ void tty_setwrap(tty_t *tty);
 #define TTY_COLOR_MAGENTA 5
 #define TTY_COLOR_CYAN 6
 #define TTY_COLOR_WHITE 7
-#define TTY_COLOR_NORMAL 9
 
 /* tty_newline
  * Move cursor to the beginning of the next line, clearing to the end of the

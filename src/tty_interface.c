@@ -57,16 +57,12 @@ static void draw_match(tty_interface_t *state, const char *choice, int selected)
 		tty_setselected(tty);
 #endif
 
-		int hl = 0;
 	tty_setnowrap(tty);
 	for (size_t i = 0, p = 0; choice[i] != '\0'; i++) {
 		if (positions[p] == i) {
-				if ( !hl )
 			tty_highlight(tty);
 			p++;
-			hl=1;
 		} else {
-				if ( hl ){
 				if (selected)
 #ifdef TTY_SELECTION_UNDERLINE
 						tty_setunderline(tty);
@@ -75,8 +71,6 @@ static void draw_match(tty_interface_t *state, const char *choice, int selected)
 #endif
 				else
 						tty_setnormal(tty);
-				hl=0;
-				}
 		}
 		if (choice[i] == '\n') {
 			tty_putc(tty, ' ');
