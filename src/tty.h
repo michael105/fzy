@@ -21,6 +21,9 @@ int tty_input_ready(tty_t *tty, long int timeout, int return_on_signal);
 
 void tty_setfg(tty_t *tty, int fg);
 void tty_setinvert(tty_t *tty);
+void tty_setselected(tty_t *tty);
+void tty_highlight(tty_t *tty);
+void tty_lowlight(tty_t *tty);
 void tty_setunderline(tty_t *tty);
 void tty_setnormal(tty_t *tty);
 void tty_setnowrap(tty_t *tty);

@@ -61,6 +61,7 @@ void tty_init(tty_t *tty, const char *tty_filename) {
 	 */
 	new_termios.c_iflag &= ~(ICRNL);
 	new_termios.c_lflag &= ~(ICANON | ECHO | ISIG);
+	new_termios.c_iflag |= INLCR;
 
 	if (tcsetattr(tty->fdin, TCSANOW, &new_termios))
 		perror("tcsetattr");
@@ -141,7 +142,30 @@ void tty_setfg(tty_t *tty, int fg) {
 }
 
 void tty_setinvert(tty_t *tty) {
-	tty_sgr(tty, 7);
+	//inverse
+	//tty_sgr(tty, 7);
+	fprintf(tty->fout,"\x1b[7m");
+}
+
+void tty_highlight(tty_t *tty) {
+	//tty_sgr(tty, 1);
+	//tty_sgr(tty,33);
+	fprintf(tty->fout,"\x1b[1;33m");
+}
+
+
+void tty_lowlight(tty_t *tty) {
+	//tty_sgr(tty, 1);
+	//tty_sgr(tty,33);
+	fprintf(tty->fout,"\x1b[1;33m");
+}
+
+
+void tty_setselected(tty_t *tty) {
+	//tty_sgr(tty, 0);
+	//tty_sgr(tty, 30);
+	//tty_sgr(tty, 46);
+	fprintf(tty->fout,"\x1b[0;30;46m");
 }
 
 void tty_setunderline(tty_t *tty) {
@@ -149,8 +173,9 @@ void tty_setunderline(tty_t *tty) {
 }
 
 void tty_setnormal(tty_t *tty) {
-	tty_sgr(tty, 0);
+	//tty_sgr(tty, 0);
 	tty->fgcolor = 9;
+	fprintf(tty->fout,"\x1b[0;9m");
 }
 
 void tty_setnowrap(tty_t *tty) {
